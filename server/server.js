@@ -39,6 +39,18 @@ module.exports = function startSocketServer (state) {
       client.emit('loginFailed', { msg: 'Player not found' })
     })
 
+    client.on('createMatch', (match) => {
+      const matchId = getUniqueId()
+      const enrichedMatch = {
+        id: matchId,
+        ...match
+      }
+      console.log({enrichedMatch})
+      state.matches.set(matchId, enrichedMatch)
+      storeState(state)
+      client.emit('matchCreated', enrichedMatch)
+    })
+
     client.on('disconnect', (e) => {
       console.log('disconnect', e, client.id)
     })

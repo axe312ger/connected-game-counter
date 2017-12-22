@@ -5,6 +5,7 @@ import { withRouter, Route, Switch } from 'react-router-dom'
 import Register from './routes/register'
 import CreateOrJoinMatch from './routes/create-or-join-match'
 import Login from './routes/login'
+import CreateMatch from './routes/create-match'
 
 class Main extends Component {
   static propTypes = {
@@ -28,6 +29,7 @@ class Main extends Component {
           <Route path='/register' component={Register} />
           <Route path='/login' component={Login} />
           <Route path='/create-or-join-match' component={CreateOrJoinMatch} />
+          <Route path='/create-match' component={CreateMatch} />
         </Switch>
       </div>
     )
