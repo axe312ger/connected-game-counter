@@ -1,0 +1,13 @@
+graph {
+  new_game
+  -- gather_settings
+  -- start_session
+  -- create_session
+  -- return_session_data
+  -- render_app;
+
+  join_game
+  -- scan_qr_code
+  -- connect_to_session
+  -- render_app;
+}
