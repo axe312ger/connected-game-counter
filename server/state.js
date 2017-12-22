@@ -16,9 +16,15 @@ function getInitialState () {
 }
 
 function storeState (state) {
-  state.players = [...state.players]
-  state.matches = [...state.matches]
-  const stateString = JSON.stringify(state, null, 2)
+  const cleanState = Object.assign(
+    {},
+    state,
+    {
+      players: [...state.players],
+      matches: [...state.matches]
+    }
+  )
+  const stateString = JSON.stringify(cleanState, null, 2)
   fs.writeFileSync('./state.json', stateString)
 }
 

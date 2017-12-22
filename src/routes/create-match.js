@@ -9,7 +9,6 @@ class CreateMatch extends Component {
     history: PropTypes.object.isRequired
   }
   state = {
-    playerId: window.localStorage.getItem('playerId'),
     title: null
   }
   constructor (props) {

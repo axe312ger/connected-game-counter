@@ -6,16 +6,14 @@ import socket from '../api.js'
 
 class Login extends Component {
   static propTypes = {
-    history: PropTypes.object.isRequired
-  }
-  state = {
-    playerId: window.localStorage.getItem('playerId') || ''
+    history: PropTypes.object.isRequired,
+    player: PropTypes.object.isRequired
   }
   constructor (props) {
     super(props)
     this.loginConfirmed = this.loginConfirmed.bind(this)
     this.loginFailed = this.loginFailed.bind(this)
-    socket.emit('loginPlayer', this.state.playerId)
+    socket.emit('loginPlayer', this.props.player.id)
   }
   componentDidMount () {
     socket.on('loginConfirmed', this.loginConfirmed)

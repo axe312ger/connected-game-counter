@@ -6,7 +6,8 @@ import socket from '../api.js'
 
 class Register extends Component {
   static propTypes = {
-    history: PropTypes.object.isRequired
+    history: PropTypes.object.isRequired,
+    setPlayer: PropTypes.func.isRequired
   }
   state = {
     name: window.localStorage.getItem('name') || ''
@@ -14,7 +15,7 @@ class Register extends Component {
   constructor (props) {
     super(props)
     this.handleSetName = this.handleSetName.bind(this)
-    this.handleSaveName = this.handleSaveName.bind(this)
+    this.handleRegister = this.handleRegister.bind(this)
     this.registrationConfirm = this.registrationConfirm.bind(this)
   }
   componentDidMount () {
@@ -24,8 +25,7 @@ class Register extends Component {
     socket.removeEventListener('registrationConfirmed', this.registrationConfirm)
   }
   registrationConfirm (player) {
-    console.log('registration confirmed', player)
-    window.localStorage.setItem('playerId', player.id)
+    this.props.setPlayer(player)
     this.props.history.push('/create-or-join-match')
   }
   handleSetName (e) {
@@ -35,7 +35,7 @@ class Register extends Component {
       name
     })
   }
-  async handleSaveName (e) {
+  async handleRegister (e) {
     const { name } = this.state
 
     if (!name.trim().length) {
@@ -46,7 +46,7 @@ class Register extends Component {
       name
     }
 
-    socket.emit('registerPlayer', { player })
+    socket.emit('registerPlayer', player)
   }
   render () {
     return (
@@ -56,7 +56,7 @@ class Register extends Component {
           <label htmlFor='name'>Choose name:</label>
           <input id='name' defaultValue={this.state.name} onChange={this.handleSetName} />
         </fieldset>
-        <button onClick={this.handleSaveName}>Continue</button>
+        <button onClick={this.handleRegister}>Continue</button>
       </div>
     )
   }

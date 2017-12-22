@@ -12,23 +12,51 @@ class Main extends Component {
     history: PropTypes.object.isRequired
   }
   state = {
-    results: [],
-    playerId: window.localStorage.getItem('playerId') || null
+    player: null,
+    match: null,
+    score: 0
+  }
+  constructor (props) {
+    super(props)
+
+    this.setPlayer = this.setPlayer.bind(this)
+
+    console.log(this.state)
+
+    if (window.localStorage.hasOwnProperty('state')) {
+      try {
+        const state = JSON.parse(window.localStorage.getItem('state', state))
+        this.state = state
+      } catch (e) {
+        console.error(e)
+      }
+    }
+  }
+  setPlayer (player) {
+    this.setState({player})
+  }
+  componentDidUpdate () {
+    window.localStorage.setItem('state', JSON.stringify(this.state))
   }
   componentDidMount () {
-    const { playerId } = this.state
-    if (!playerId) {
+    console.log('initial state', this.state)
+    const { player } = this.state
+    if (!player) {
       return this.props.history.push('/register')
     }
     return this.props.history.push('/login')
   }
+  componentWillUpdate () {
+    console.log('main update', this.state)
+  }
   render () {
+    const { player } = this.state
     return (
       <div>
         <Switch>
-          <Route path='/register' component={Register} />
-          <Route path='/login' component={Login} />
-          <Route path='/create-or-join-match' component={CreateOrJoinMatch} />
+          <Route path='/register' render={() => <Register setPlayer={this.setPlayer} />} />
+          <Route path='/login' render={() => <Login player={player} />} />
+          <Route path='/create-or-join-match' render={() => <CreateOrJoinMatch player={player} />} />
           <Route path='/create-match' component={CreateMatch} />
         </Switch>
       </div>
