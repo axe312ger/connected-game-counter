@@ -6,6 +6,7 @@ import Register from './routes/register'
 import CreateOrJoinMatch from './routes/create-or-join-match'
 import Login from './routes/login'
 import CreateMatch from './routes/create-match'
+import Match from './routes/match'
 
 class Main extends Component {
   static propTypes = {
@@ -14,14 +15,14 @@ class Main extends Component {
   state = {
     player: null,
     match: null,
+    activeMatch: null,
     score: 0
   }
   constructor (props) {
     super(props)
 
     this.setPlayer = this.setPlayer.bind(this)
-
-    console.log(this.state)
+    this.setMatch = this.setMatch.bind(this)
 
     if (window.localStorage.hasOwnProperty('state')) {
       try {
@@ -33,7 +34,12 @@ class Main extends Component {
     }
   }
   setPlayer (player) {
+    console.log('player created', player)
     this.setState({player})
+  }
+  setMatch (match) {
+    console.log('match created', match)
+    this.setState({match})
   }
   componentDidUpdate () {
     window.localStorage.setItem('state', JSON.stringify(this.state))
@@ -41,6 +47,8 @@ class Main extends Component {
   componentDidMount () {
     console.log('initial state', this.state)
     const { player } = this.state
+    const activeMatch = this.props.history.location.pathname.split('/match/')[1]
+    this.setState({ activeMatch })
     if (!player) {
       return this.props.history.push('/register')
     }
@@ -50,14 +58,15 @@ class Main extends Component {
     console.log('main update', this.state)
   }
   render () {
-    const { player } = this.state
+    const { player, activeMatch } = this.state
     return (
       <div>
         <Switch>
-          <Route path='/register' render={() => <Register setPlayer={this.setPlayer} />} />
-          <Route path='/login' render={() => <Login player={player} />} />
+          <Route path='/register' render={() => <Register setPlayer={this.setPlayer} activeMatch={activeMatch} />} />
+          <Route path='/login' render={() => <Login player={player} activeMatch={activeMatch} />} />
           <Route path='/create-or-join-match' render={() => <CreateOrJoinMatch player={player} />} />
-          <Route path='/create-match' component={CreateMatch} />
+          <Route path='/create-match' render={() => <CreateMatch setMatch={this.setMatch} />} />
+          <Route path='/match/:id' render={() => <Match player={player} />} />
         </Switch>
       </div>
     )

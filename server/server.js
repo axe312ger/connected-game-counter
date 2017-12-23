@@ -12,6 +12,31 @@ module.exports = function startSocketServer (state) {
     return id
   }
 
+  function sendMatchStateToAll (match) {
+    const players = Object.keys(match.scores)
+      .map((playerId) => state.players.get(playerId))
+
+    const scores = Object.keys((match.scores))
+      .map((playerId) => ({
+        score: match.scores[playerId],
+        player: state.players.get(playerId)
+      }))
+      .sort((a, b) => a.score - b.score)
+
+    const enrichedMatch = {
+      ...match,
+      scores
+    }
+
+    for (let player of players) {
+      const client = io.sockets.connected[player.socketId]
+      if (client) {
+        console.log('Notifing', player.id, 'about match updates')
+        client.emit('matchUpdated', enrichedMatch)
+      }
+    }
+  }
+
   const io = Socket()
 
   io.on('connection', (client) => {
@@ -21,6 +46,7 @@ module.exports = function startSocketServer (state) {
       const playerId = getUniqueId()
       const enrichedPlayer = {
         id: playerId,
+        socketId: client.id,
         ...player
       }
       console.log({enrichedPlayer})
@@ -32,7 +58,10 @@ module.exports = function startSocketServer (state) {
     client.on('loginPlayer', (playerId) => {
       const player = state.players.get(playerId)
       if (player) {
-        console.log('loginConfirmed', player)
+        player.socketId = client.id
+        console.log('loginConfirmed', playerId)
+        state.players.set(playerId, player)
+        storeState(state)
         return client.emit('loginConfirmed', player)
       }
       console.log('loginFailed', playerId)
@@ -43,12 +72,31 @@ module.exports = function startSocketServer (state) {
       const matchId = getUniqueId()
       const enrichedMatch = {
         id: matchId,
+        scores: {},
         ...match
       }
       console.log({enrichedMatch})
       state.matches.set(matchId, enrichedMatch)
       storeState(state)
       client.emit('matchCreated', enrichedMatch)
+    })
+
+    client.on('joinMatch', ({matchId, player}) => {
+      console.log('player', player.name, 'joining', matchId)
+      const match = state.matches.get(matchId)
+      if (match && !Object.keys(match.scores).includes(player.id)) {
+        console.log('player is new to match')
+        match.scores = {
+          ...match.scores,
+          [player.id]: 0
+        }
+        state.matches.set(matchId, match)
+        storeState(state)
+        return
+      } else {
+        console.log('player already part of the match')
+      }
+      sendMatchStateToAll(match)
     })
 
     client.on('disconnect', (e) => {

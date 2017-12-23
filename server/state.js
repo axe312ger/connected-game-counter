@@ -12,6 +12,8 @@ function getInitialState () {
     state.matches = new Map(state.matches)
   }
 
+  console.log('Initial state:', state)
+
   return state
 }
 

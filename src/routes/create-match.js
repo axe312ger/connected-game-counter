@@ -6,7 +6,8 @@ import socket from '../api.js'
 
 class CreateMatch extends Component {
   static propTypes = {
-    history: PropTypes.object.isRequired
+    history: PropTypes.object.isRequired,
+    setMatch: PropTypes.func.isRequired
   }
   state = {
     title: null
@@ -24,7 +25,7 @@ class CreateMatch extends Component {
     socket.removeEventListener('matchCreated', this.matchCreated)
   }
   matchCreated (match) {
-    console.log('match created', match)
+    this.props.setMatch(match)
     this.props.history.push(`/match/${match.id}`)
   }
   handleSetTitle (e) {

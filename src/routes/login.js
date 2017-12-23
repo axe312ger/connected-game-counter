@@ -7,7 +7,8 @@ import socket from '../api.js'
 class Login extends Component {
   static propTypes = {
     history: PropTypes.object.isRequired,
-    player: PropTypes.object.isRequired
+    player: PropTypes.object.isRequired,
+    activeMatch: PropTypes.string
   }
   constructor (props) {
     super(props)
@@ -24,6 +25,10 @@ class Login extends Component {
   }
   loginConfirmed (player) {
     console.log('login confirmed', player)
+    const { activeMatch } = this.props
+    if (activeMatch) {
+      return this.props.history.push(`/match/${activeMatch}`)
+    }
     this.props.history.push('/create-or-join-match')
   }
   loginFailed () {

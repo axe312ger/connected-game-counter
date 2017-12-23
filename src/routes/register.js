@@ -7,7 +7,8 @@ import socket from '../api.js'
 class Register extends Component {
   static propTypes = {
     history: PropTypes.object.isRequired,
-    setPlayer: PropTypes.func.isRequired
+    setPlayer: PropTypes.func.isRequired,
+    activeMatch: PropTypes.string
   }
   state = {
     name: window.localStorage.getItem('name') || ''
@@ -26,6 +27,10 @@ class Register extends Component {
   }
   registrationConfirm (player) {
     this.props.setPlayer(player)
+    const { activeMatch } = this.props
+    if (activeMatch) {
+      return this.props.history.push(`/match/${activeMatch}`)
+    }
     this.props.history.push('/create-or-join-match')
   }
   handleSetName (e) {
