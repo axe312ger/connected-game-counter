@@ -16,6 +16,8 @@ class Match extends Component {
   constructor (props) {
     super(props)
     this.matchUpdated = this.matchUpdated.bind(this)
+    this.increment = this.increment.bind(this)
+    this.decrement = this.decrement.bind(this)
   }
   componentDidMount () {
     const { match, player } = this.props
@@ -30,7 +32,25 @@ class Match extends Component {
     socket.removeEventListener('matchUpdated', this.matchUpdated)
   }
   matchUpdated (match) {
-    this.setState({match})
+    const { player } = this.props
+    const score = match.scores
+      .find((score) => score.player.id === player.id)
+      .score
+    this.setState({match, score})
+  }
+  increment () {
+    const { player } = this.props
+    const { score, match } = this.state
+    const newScore = score + 1
+    this.setState({ score: newScore })
+    socket.emit('increment', {matchId: match.id, playerId: player.id})
+  }
+  decrement () {
+    const { player } = this.props
+    const { score, match } = this.state
+    const newScore = score - 1
+    this.setState({ score: newScore })
+    socket.emit('decrement', {matchId: match.id, playerId: player.id})
   }
   render () {
     const { player } = this.props
@@ -43,25 +63,27 @@ class Match extends Component {
     return (
       <div>
         <h1>Current Match:</h1>
-        <h3>{player.name}</h3>
+        <h3>{player.name} ({player.id})</h3>
         { match && (
           <div>
             <h2>{match.title}</h2>
-            <div>{
-              match.scores
-                .map((score) => (
-                  <div key={score.player.id}>
-                    <p><strong>{score.player.name}:</strong> {score.score}</p>
-                  </div>
-                ))
-            }</div>
+            <ol>
+              {
+                match.scores
+                  .map((score) => (
+                    <li key={score.player.id}>
+                      <p><strong>{score.player.name}:</strong> {score.score}</p>
+                    </li>
+                  ))
+              }
+            </ol>
           </div>
         )}
         <hr />
         <div>
           <h1>{score}</h1>
-          <button>➕</button>
-          <button>➖</button>
+          <button onClick={this.increment}>➕</button>
+          <button onClick={this.decrement}>➖</button>
         </div>
       </div>
     )

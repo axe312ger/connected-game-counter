@@ -21,7 +21,12 @@ module.exports = function startSocketServer (state) {
         score: match.scores[playerId],
         player: state.players.get(playerId)
       }))
-      .sort((a, b) => a.score - b.score)
+      .sort((a, b) => {
+        if (a.score === b.score) {
+          return a.player.name.localeCompare(b.player.name)
+        }
+        return b.score - a.score
+      })
 
     const enrichedMatch = {
       ...match,
@@ -82,7 +87,7 @@ module.exports = function startSocketServer (state) {
     })
 
     client.on('joinMatch', ({matchId, player}) => {
-      console.log('player', player.name, 'joining', matchId)
+      console.log('player', `${player.name}, (${player.id})`, 'joining match', matchId)
       const match = state.matches.get(matchId)
       if (match && !Object.keys(match.scores).includes(player.id)) {
         console.log('player is new to match')
@@ -97,6 +102,38 @@ module.exports = function startSocketServer (state) {
         console.log('player already part of the match')
       }
       sendMatchStateToAll(match)
+    })
+
+    client.on('increment', ({playerId, matchId}) => {
+      const match = state.matches.get(matchId)
+      if (match) {
+        if (playerId in match.scores) {
+          const score = match.scores[playerId]
+          match.scores[playerId] = score + 1
+          state.matches.set(matchId, match)
+          storeState(state)
+          sendMatchStateToAll(match)
+          return
+        }
+      }
+
+      console.error('invalid player or match', playerId, matchId)
+    })
+
+    client.on('decrement', ({playerId, matchId}) => {
+      const match = state.matches.get(matchId)
+      if (match) {
+        if (playerId in match.scores) {
+          const score = match.scores[playerId]
+          match.scores[playerId] = score - 1
+          state.matches.set(matchId, match)
+          storeState(state)
+          sendMatchStateToAll(match)
+          return
+        }
+      }
+
+      console.error('invalid player or match', playerId, matchId)
     })
 
     client.on('disconnect', (e) => {
