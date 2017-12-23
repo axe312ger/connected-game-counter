@@ -4,6 +4,8 @@ import { withRouter } from 'react-router-dom'
 
 import socket from '../api.js'
 
+const host = process.env.NODE_ENV === 'production' ? 'https://connected-game-counter.now.sh' : 'http://localhost'
+
 class Match extends Component {
   static propTypes = {
     match: PropTypes.object.isRequired,
@@ -56,35 +58,35 @@ class Match extends Component {
     const { player } = this.props
     const { match, score } = this.state
 
-    if (!player) {
-      return null
+    if (!player || !match) {
+      return <div>Please wait</div>
     }
 
     return (
       <div>
         <h1>Current Match:</h1>
         <h3>{player.name} ({player.id})</h3>
-        { match && (
-          <div>
-            <h2>{match.title}</h2>
-            <ol>
-              {
-                match.scores
-                  .map((score) => (
-                    <li key={score.player.id}>
-                      <p><strong>{score.player.name}:</strong> {score.score}</p>
-                    </li>
-                  ))
-              }
-            </ol>
-          </div>
-        )}
+        <div>
+          <h2>{match.title}</h2>
+          <ol>
+            {
+              match.scores
+                .map((score) => (
+                  <li key={score.player.id}>
+                    <p><strong>{score.player.name}:</strong> {score.score}</p>
+                  </li>
+                ))
+            }
+          </ol>
+        </div>
         <hr />
         <div>
           <h1>{score}</h1>
           <button onClick={this.increment}>➕</button>
           <button onClick={this.decrement}>➖</button>
         </div>
+        <hr />
+        <p>Share match: <a href={`${host}/match/${match.id}`}>{`${host}/match/${match.id}`}</a></p>
       </div>
     )
   }

@@ -3,6 +3,8 @@ const hri = require('human-readable-ids').hri
 
 const { storeState } = require('./state')
 
+const PORT = Number(process.env.PORT || 8000)
+
 module.exports = function startSocketServer (state) {
   function getUniqueId () {
     const id = hri.random()
@@ -141,7 +143,6 @@ module.exports = function startSocketServer (state) {
     })
   })
 
-  const port = 8000
-  io.listen(port)
-  console.log('listening on port ', port)
+  io.listen(PORT)
+  console.log('socket listening on port ', PORT)
 }

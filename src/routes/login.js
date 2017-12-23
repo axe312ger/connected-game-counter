@@ -32,7 +32,7 @@ class Login extends Component {
     this.props.history.push('/create-or-join-match')
   }
   loginFailed () {
-    console.log('login failed', this.state.playerId)
+    console.log('login failed', this.props.player)
     this.props.history.push('/register')
   }
   render () {

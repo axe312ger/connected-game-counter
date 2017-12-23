@@ -1,4 +1,10 @@
 const fs = require('fs')
+const { resolve } = require('path')
+const stateFile = process.env.NODE_ENV === 'production'
+  ? resolve('/tmp', 'state.json')
+  : resolve(__dirname, 'state.json')
+
+console.log('Loading state from:', stateFile, 'env:', process.env.NODE_ENV)
 
 function getInitialState () {
   let state = {
@@ -6,8 +12,8 @@ function getInitialState () {
     matches: new Map()
   }
 
-  if (fs.existsSync('./state.json')) {
-    state = JSON.parse(fs.readFileSync('./state.json'))
+  if (fs.existsSync(stateFile)) {
+    state = JSON.parse(fs.readFileSync(stateFile))
     state.players = new Map(state.players)
     state.matches = new Map(state.matches)
   }
@@ -27,7 +33,7 @@ function storeState (state) {
     }
   )
   const stateString = JSON.stringify(cleanState, null, 2)
-  fs.writeFileSync('./state.json', stateString)
+  fs.writeFileSync(stateFile, stateString)
 }
 
 module.exports = {

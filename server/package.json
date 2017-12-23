@@ -1,0 +1,31 @@
+{
+  "name": "connected-game-counter-server",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": "8"
+  },
+  "now": {
+    "alias": "connected-game-counter-server"
+  },
+  "scripts": {
+    "start": "node index",
+    "prod": "NODE_ENV=production forever index.js",
+    "now-start": "PORT=80 npm run prod",
+    "deploy": "now --public --debug && now alias"
+  },
+  "dependencies": {
+    "forever": "^0.15.3",
+    "human-readable-ids": "^1.0.3",
+    "socket.io": "^2.0.4"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.0.3",
+    "eslint": "^4.13.1",
+    "eslint-config-standard": "^11.0.0-beta.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1"
+  }
+}
