@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom'
+import QRCode from 'qrcode.react'
 
 import socket from '../api.js'
 
@@ -59,15 +60,16 @@ class Match extends Component {
     const { match, score } = this.state
 
     if (!player || !match) {
-      return <div>Please wait</div>
+      return <div>Please wait...</div>
     }
+
+    const matchURI = `${host}/match/${match.id}`
 
     return (
       <div>
-        <h1>Current Match:</h1>
-        <h3>{player.name} ({player.id})</h3>
+        <h1>Current Match: {match.title}</h1>
+        <h2>Scores:</h2>
         <div>
-          <h2>{match.title}</h2>
           <ol>
             {
               match.scores
@@ -81,12 +83,14 @@ class Match extends Component {
         </div>
         <hr />
         <div>
+          <h3>{player.name} ({player.id}):</h3>
           <h1>{score}</h1>
           <button onClick={this.increment}>➕</button>
           <button onClick={this.decrement}>➖</button>
         </div>
         <hr />
-        <p>Share match: <a href={`${host}/match/${match.id}`}>{`${host}/match/${match.id}`}</a></p>
+        <p>Share match: <a href={matchURI}>{matchURI}</a></p>
+        <QRCode value={matchURI} />
       </div>
     )
   }
