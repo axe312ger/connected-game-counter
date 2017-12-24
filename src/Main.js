@@ -6,6 +6,7 @@ import Register from './routes/register'
 import CreateOrJoinMatch from './routes/create-or-join-match'
 import Login from './routes/login'
 import CreateMatch from './routes/create-match'
+import JoinMatch from './routes/join-match'
 import Match from './routes/match'
 
 class Main extends Component {
@@ -26,7 +27,7 @@ class Main extends Component {
 
     if (window.localStorage.hasOwnProperty('state')) {
       try {
-        const state = JSON.parse(window.localStorage.getItem('state', state))
+        const state = JSON.parse(window.localStorage.getItem('state'))
         this.state = state
       } catch (e) {
         console.error(e)
@@ -66,6 +67,7 @@ class Main extends Component {
           <Route path='/login' render={() => <Login player={player} activeMatch={activeMatch} />} />
           <Route path='/create-or-join-match' render={() => <CreateOrJoinMatch player={player} />} />
           <Route path='/create-match' render={() => <CreateMatch setMatch={this.setMatch} />} />
+          <Route path='/join-match' render={() => <JoinMatch />} />
           <Route path='/match/:id' render={() => <Match player={player} />} />
         </Switch>
       </div>

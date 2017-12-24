@@ -91,6 +91,12 @@ module.exports = function startSocketServer (state) {
     client.on('joinMatch', ({matchId, player}) => {
       console.log('player', `${player.name}, (${player.id})`, 'joining match', matchId)
       const match = state.matches.get(matchId)
+
+      if (!match) {
+        console.log('Match not found with id', matchId)
+        return
+      }
+
       if (match && !Object.keys(match.scores).includes(player.id)) {
         console.log('player is new to match')
         match.scores = {
