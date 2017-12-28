@@ -2,7 +2,19 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom'
 
+import styled from 'styled-components'
+import {
+  Grid,
+  Typography
+} from 'material-ui'
+
+import { CircularProgress } from 'material-ui/Progress'
+
 import socket from '../api.js'
+
+const Page = styled.div`
+  padding: 1rem;
+`
 
 class Login extends Component {
   static propTypes = {
@@ -37,9 +49,16 @@ class Login extends Component {
   }
   render () {
     return (
-      <div>
-        <h1>Logging you in</h1>
-      </div>
+      <Page>
+        <Grid container direction='column' alignItems='center' spacing={24}>
+          <Grid item xs>
+            <CircularProgress />
+          </Grid>
+          <Grid item xs={12}>
+            <Typography type='title'>Logging you in...</Typography>
+          </Grid>
+        </Grid>
+      </Page>
     )
   }
 }

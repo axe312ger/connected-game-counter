@@ -3,7 +3,32 @@ import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom'
 import QRCode from 'qrcode.react'
 
+import styled from 'styled-components'
+import {
+  Grid,
+  Paper,
+  Typography,
+  Button,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText
+} from 'material-ui'
+
+import { CircularProgress } from 'material-ui/Progress'
+
+import AddIcon from 'material-ui-icons/Add'
+import RemoveIcon from 'material-ui-icons/Remove'
+
 import socket from '../api.js'
+
+const Page = styled.div`
+  padding: 1rem;
+`
+
+const Section = styled(Paper)`
+  padding: 1rem;
+`
 
 const host = process.env.NODE_ENV === 'production' ? 'https://connected-game-counter.now.sh' : 'http://localhost'
 
@@ -29,6 +54,7 @@ class Match extends Component {
     if (matchId && player) {
       socket.emit('joinMatch', {matchId, player})
     }
+
     socket.on('matchUpdated', this.matchUpdated)
   }
   componentWillUnmount () {
@@ -60,38 +86,79 @@ class Match extends Component {
     const { match, score } = this.state
 
     if (!player || !match) {
-      return <div>Please wait...</div>
+      return (
+        <Page>
+          <Grid container direction='column' alignItems='center' spacing={24}>
+            <Grid item xs>
+              <CircularProgress />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography type='title'>Loading match...</Typography>
+            </Grid>
+          </Grid>
+        </Page>
+      )
     }
 
     const matchURI = `${host}/match/${match.id}`
 
     return (
-      <div>
-        <h1>Current Match: {match.title}</h1>
-        <h2>Scores:</h2>
-        <div>
-          <ol>
-            {
-              match.scores
-                .map((score) => (
-                  <li key={score.player.id}>
-                    <p><strong>{score.player.name}:</strong> {score.score}</p>
-                  </li>
-                ))
-            }
-          </ol>
-        </div>
-        <hr />
-        <div>
-          <h3>{player.name} ({player.id}):</h3>
-          <h1>{score}</h1>
-          <button onClick={this.increment}>➕</button>
-          <button onClick={this.decrement}>➖</button>
-        </div>
-        <hr />
-        <p>Share match: <a href={matchURI}>{matchURI}</a></p>
-        <QRCode value={matchURI} />
-      </div>
+      <Page>
+        <Grid container spacing={24} justify='stretch'>
+          <Grid item xs={12}>
+            <Typography type='title'>Match: {match.title}</Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <List>
+              {
+                match.scores
+                  .map((score, index) => (
+                    <ListItem button key={score.player.id}>
+                      <ListItemIcon>
+                        <div>{index + 1}.</div>
+                      </ListItemIcon>
+                      <ListItemText primary={`${score.player.name}: ${score.score} points`} />
+                    </ListItem>
+                  ))
+              }
+            </List>
+          </Grid>
+          <Grid item xs={12}>
+            <Section>
+              <Grid container spacing={24} justify='center'>
+                <Grid item xs={12}>
+                  <Typography type='headline'>Your current score: {score}</Typography>
+                </Grid>
+                <Grid item>
+                  <Button fab color='primary' onClick={this.increment}>
+                    <AddIcon />
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button fab color='contrast' onClick={this.decrement}>
+                    <RemoveIcon />
+                  </Button>
+                </Grid>
+              </Grid>
+            </Section>
+          </Grid>
+          <Grid item xs={12}>
+            <Section>
+              <Grid container spacing={24} justify='center'>
+                <Grid item xs={12}>
+                  <Typography type='headline'>Share match:</Typography>
+                  <Typography>Match ID: {match.id}</Typography>
+                  <Typography>Via link: <a href={matchURI}>{matchURI}</a></Typography>
+                </Grid>
+                <Grid item>
+                  <Typography>Via QR-Code:</Typography>
+                  <QRCode value={matchURI} />
+                </Grid>
+              </Grid>
+            </Section>
+          </Grid>
+        </Grid>
+      </Page>
     )
   }
 }

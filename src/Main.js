@@ -2,6 +2,12 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { withRouter, Route, Switch } from 'react-router-dom'
 
+import {
+  AppBar,
+  Toolbar,
+  Typography
+} from 'material-ui'
+
 import Register from './routes/register'
 import CreateOrJoinMatch from './routes/create-or-join-match'
 import Login from './routes/login'
@@ -62,6 +68,13 @@ class Main extends Component {
     const { player, activeMatch } = this.state
     return (
       <div>
+        <AppBar position='static' color='primary'>
+          <Toolbar>
+            <Typography type='title' color='inherit'>
+              Smart Game Counter
+            </Typography>
+          </Toolbar>
+        </AppBar>
         <Switch>
           <Route path='/register' render={() => <Register setPlayer={this.setPlayer} activeMatch={activeMatch} />} />
           <Route path='/login' render={() => <Login player={player} activeMatch={activeMatch} />} />

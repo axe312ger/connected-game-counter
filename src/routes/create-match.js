@@ -2,7 +2,20 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom'
 
+import styled from 'styled-components'
+import {
+  Typography,
+  FormGroup,
+  Button,
+  TextField
+} from 'material-ui'
+
 import socket from '../api.js'
+
+const Page = styled.div`
+  padding: 1rem;
+  flex-grow: 1;
+`
 
 class CreateMatch extends Component {
   static propTypes = {
@@ -45,14 +58,24 @@ class CreateMatch extends Component {
   }
   render () {
     return (
-      <div>
-        <h1>Create Match:</h1>
-        <fieldset>
-          <label htmlFor='name'>Title:</label>
-          <input id='name' onChange={this.handleSetTitle} />
-        </fieldset>
-        <button onClick={this.handleCreateMatch}>Create match</button>
-      </div>
+      <Page>
+        <Typography type='title'>Create Match:</Typography>
+        <FormGroup>
+          <TextField
+            required
+            label='Name of the match'
+            margin='normal'
+            id='name'
+            defaultValue={this.state.title}
+            onChange={this.handleSetTitle}
+          />
+        </FormGroup>
+        <Button
+          onClick={this.handleCreateMatch}
+          raised
+          color='primary'
+        >Create match</Button>
+      </Page>
     )
   }
 }
