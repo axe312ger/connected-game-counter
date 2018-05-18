@@ -17,7 +17,7 @@
   "dependencies": {
     "forever": "^0.15.3",
     "human-readable-ids": "^1.0.3",
-    "socket.io": "^2.0.4"
+    "socket.io": "^2.1.1"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.3",
