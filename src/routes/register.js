@@ -85,17 +85,18 @@ class Register extends Component {
           <Grid item xs={12}>
             <ExpansionPanel>
               <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography type='headline'>
-                  What is this?
-                </Typography>
+                <Typography type='headline'>What is this?</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
                 <div>
                   <Typography type='title'>
-                    Keep an easy eye on all match scores. Live and for all players.
+                    Keep an easy eye on all match scores. Live and for all
+                    players.
                   </Typography>
-                  <Typography type='paragraph'>
-                    Track scores in card, tabletop and other games. Your own and your oppenents. Set up a match and share it via QR-code, no installation required.
+                  <Typography type='subheading'>
+                    Track scores in card, tabletop and other games. Your own and
+                    your oppenents. Set up a match and share it via QR-code, no
+                    installation required.
                   </Typography>
                 </div>
               </ExpansionPanelDetails>
@@ -108,7 +109,8 @@ class Register extends Component {
                   Let's start - Set up your account:
                 </Typography>
                 <Typography>
-                  We need your name. Simply for other players to identify you. No email and nothing else.
+                  We need your name. Simply for other players to identify you.
+                  No email and nothing else.
                 </Typography>
               </div>
               <FormGroup>
@@ -120,11 +122,9 @@ class Register extends Component {
                   defaultValue={this.state.name}
                   onChange={this.handleSetName}
                 />
-                <Button
-                  onClick={this.handleRegister}
-                  raised
-                  color='primary'
-                >Continue</Button>
+                <Button onClick={this.handleRegister} raised color='primary'>
+                  Continue
+                </Button>
               </FormGroup>
             </FormWrapper>
           </Grid>
