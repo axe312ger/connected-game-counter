@@ -50,6 +50,7 @@ module.exports = function startSocketServer (state) {
     console.log('Client connected:', client.id)
 
     client.on('registerPlayer', (player) => {
+      console.log({ player })
       const playerId = getUniqueId()
       const enrichedPlayer = {
         id: playerId,

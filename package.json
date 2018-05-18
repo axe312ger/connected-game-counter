@@ -24,29 +24,31 @@
     "deploy": "npm run build-prod && now --public --debug && now alias"
   },
   "dependencies": {
+    "@material-ui/core": "^1.0.0",
+    "@material-ui/icons": "^1.0.0",
+    "install": "^0.11.0",
+    "npm": "^6.0.1",
     "proptypes": "^1.1.0",
-    "serve": "^6.4.3",
-    "socket.io-client": "^2.0.4"
+    "serve": "^6.5.7",
+    "socket.io-client": "^2.1.1"
   },
   "devDependencies": {
-    "babel-eslint": "^8.0.3",
-    "eslint": "^4.13.1",
-    "eslint-config-standard": "^11.0.0-beta.0",
+    "babel-eslint": "^8.2.3",
+    "eslint": "^4.19.1",
+    "eslint-config-standard": "^11.0.0",
     "eslint-config-standard-react": "^5.0.0",
-    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-import": "^2.12.0",
     "eslint-plugin-node": "^5.2.1",
-    "eslint-plugin-promise": "^3.6.0",
-    "eslint-plugin-react": "^7.5.1",
-    "eslint-plugin-standard": "^3.0.1",
+    "eslint-plugin-promise": "^3.7.0",
+    "eslint-plugin-react": "^7.8.2",
+    "eslint-plugin-standard": "^3.1.0",
     "jest-localstorage-mock": "^2.2.0",
-    "material-ui": "^1.0.0-beta.25",
-    "material-ui-icons": "^1.0.0-beta.17",
-    "qrcode.react": "^0.7.2",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-qr-reader": "^2.0.1",
+    "qrcode.react": "^0.8.0",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-qr-reader": "^2.1.0",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.4",
-    "styled-components": "^2.4.0"
+    "styled-components": "^3.2.6"
   }
 }

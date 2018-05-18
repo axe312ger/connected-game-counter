@@ -6,7 +6,7 @@ import {
   AppBar,
   Toolbar,
   Typography
-} from 'material-ui'
+} from '@material-ui/core'
 
 import Register from './routes/register'
 import CreateOrJoinMatch from './routes/create-or-join-match'

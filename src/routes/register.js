@@ -10,14 +10,14 @@ import {
   Button,
   TextField,
   Typography
-} from 'material-ui'
+} from '@material-ui/core'
 
-import ExpandMoreIcon from 'material-ui-icons/ExpandMore'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 import ExpansionPanel, {
   ExpansionPanelSummary,
   ExpansionPanelDetails
-} from 'material-ui/ExpansionPanel'
+} from '@material-ui/core/ExpansionPanel'
 
 import socket from '../api.js'
 
@@ -48,7 +48,10 @@ class Register extends Component {
     socket.on('registrationConfirmed', this.registrationConfirm)
   }
   componentWillUnmount () {
-    socket.removeEventListener('registrationConfirmed', this.registrationConfirm)
+    socket.removeEventListener(
+      'registrationConfirmed',
+      this.registrationConfirm
+    )
   }
   registrationConfirm (player) {
     this.props.setPlayer(player)
@@ -77,6 +80,7 @@ class Register extends Component {
     }
 
     socket.emit('registerPlayer', player)
+    console.log({ player })
   }
   render () {
     return (
@@ -122,7 +126,11 @@ class Register extends Component {
                   defaultValue={this.state.name}
                   onChange={this.handleSetName}
                 />
-                <Button onClick={this.handleRegister} raised color='primary'>
+                <Button
+                  onClick={this.handleRegister}
+                  variant='raised'
+                  color='primary'
+                >
                   Continue
                 </Button>
               </FormGroup>

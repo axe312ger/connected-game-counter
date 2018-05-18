@@ -5,10 +5,9 @@ import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 import {
   Grid,
-  Typography
-} from 'material-ui'
-
-import { CircularProgress } from 'material-ui/Progress'
+  Typography,
+  CircularProgress
+} from '@material-ui/core'
 
 import socket from '../api.js'
 

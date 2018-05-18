@@ -11,7 +11,7 @@ import {
   TextField,
   Button,
   Paper
-} from 'material-ui'
+} from '@material-ui/core'
 
 const Page = styled.div`
   flex-grow: 1;
@@ -64,7 +64,9 @@ class JoinMatch extends Component {
         <Grid container>
           <Grid item xs={12}>
             <Typography type='headline'>Join Match:</Typography>
-            <Typography>Scan QR-Code from other player or enter match ID below</Typography>
+            <Typography>
+              Scan QR-Code from other player or enter match ID below
+            </Typography>
           </Grid>
           <Grid item xs={12}>
             <Grid container justify='center'>
@@ -89,7 +91,13 @@ class JoinMatch extends Component {
                 value={matchId}
                 onChange={this.handleSetMatchId}
               />
-              <Button raised color={'primary'} onClick={this.joinMatch}>Join match</Button>
+              <Button
+                variant='raised'
+                color={'primary'}
+                onClick={this.joinMatch}
+              >
+                Join match
+              </Button>
             </FormGroup>
           </Grid>
         </Grid>

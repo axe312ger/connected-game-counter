@@ -3,12 +3,7 @@ import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom'
 
 import styled from 'styled-components'
-import {
-  Typography,
-  FormGroup,
-  Button,
-  TextField
-} from 'material-ui'
+import { Typography, FormGroup, Button, TextField } from '@material-ui/core'
 
 import socket from '../api.js'
 
@@ -72,9 +67,11 @@ class CreateMatch extends Component {
         </FormGroup>
         <Button
           onClick={this.handleCreateMatch}
-          raised
+          variant='raised'
           color='primary'
-        >Create match</Button>
+        >
+          Create match
+        </Button>
       </Page>
     )
   }

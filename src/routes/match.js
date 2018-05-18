@@ -12,13 +12,12 @@ import {
   List,
   ListItem,
   ListItemIcon,
-  ListItemText
-} from 'material-ui'
+  ListItemText,
+  CircularProgress
+} from '@material-ui/core'
 
-import { CircularProgress } from 'material-ui/Progress'
-
-import AddIcon from 'material-ui-icons/Add'
-import RemoveIcon from 'material-ui-icons/Remove'
+import AddIcon from '@material-ui/icons/Add'
+import RemoveIcon from '@material-ui/icons/Remove'
 
 import socket from '../api.js'
 
@@ -30,7 +29,10 @@ const Section = styled(Paper)`
   padding: 1rem;
 `
 
-const host = process.env.NODE_ENV === 'production' ? 'https://connected-game-counter.now.sh' : 'http://localhost'
+const host =
+  process.env.NODE_ENV === 'production'
+    ? 'https://connected-game-counter.now.sh'
+    : 'http://localhost'
 
 class Match extends Component {
   static propTypes = {
@@ -52,7 +54,7 @@ class Match extends Component {
     const matchId = match.params.id
 
     if (matchId && player) {
-      socket.emit('joinMatch', {matchId, player})
+      socket.emit('joinMatch', { matchId, player })
     }
 
     socket.on('matchUpdated', this.matchUpdated)
@@ -62,24 +64,23 @@ class Match extends Component {
   }
   matchUpdated (match) {
     const { player } = this.props
-    const score = match.scores
-      .find((score) => score.player.id === player.id)
+    const score = match.scores.find(score => score.player.id === player.id)
       .score
-    this.setState({match, score})
+    this.setState({ match, score })
   }
   increment () {
     const { player } = this.props
     const { score, match } = this.state
     const newScore = score + 1
     this.setState({ score: newScore })
-    socket.emit('increment', {matchId: match.id, playerId: player.id})
+    socket.emit('increment', { matchId: match.id, playerId: player.id })
   }
   decrement () {
     const { player } = this.props
     const { score, match } = this.state
     const newScore = score - 1
     this.setState({ score: newScore })
-    socket.emit('decrement', {matchId: match.id, playerId: player.id})
+    socket.emit('decrement', { matchId: match.id, playerId: player.id })
   }
   render () {
     const { player } = this.props
@@ -104,38 +105,47 @@ class Match extends Component {
 
     return (
       <Page>
-        <Grid container spacing={24} justify='stretch'>
+        <Grid container spacing={24}>
           <Grid item xs={12}>
             <Typography type='title'>Match: {match.title}</Typography>
           </Grid>
           <Grid item xs={12}>
             <List>
-              {
-                match.scores
-                  .map((score, index) => (
-                    <ListItem button key={score.player.id}>
-                      <ListItemIcon>
-                        <div>{index + 1}.</div>
-                      </ListItemIcon>
-                      <ListItemText primary={`${score.player.name}: ${score.score} points`} />
-                    </ListItem>
-                  ))
-              }
+              {match.scores.map((score, index) => (
+                <ListItem button key={score.player.id}>
+                  <ListItemIcon>
+                    <div>{index + 1}.</div>
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={`${score.player.name}: ${score.score} points`}
+                  />
+                </ListItem>
+              ))}
             </List>
           </Grid>
           <Grid item xs={12}>
             <Section>
               <Grid container spacing={24} justify='center'>
                 <Grid item xs={12}>
-                  <Typography type='headline'>Your current score: {score}</Typography>
+                  <Typography type='headline'>
+                    Your current score: {score}
+                  </Typography>
                 </Grid>
                 <Grid item>
-                  <Button fab color='primary' onClick={this.increment}>
+                  <Button
+                    variant='fab'
+                    color='primary'
+                    onClick={this.increment}
+                  >
                     <AddIcon />
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button fab color='contrast' onClick={this.decrement}>
+                  <Button
+                    variant='fab'
+                    color='secondary'
+                    onClick={this.decrement}
+                  >
                     <RemoveIcon />
                   </Button>
                 </Grid>
@@ -148,7 +158,9 @@ class Match extends Component {
                 <Grid item xs={12}>
                   <Typography type='headline'>Share match:</Typography>
                   <Typography>Match ID: {match.id}</Typography>
-                  <Typography>Via link: <a href={matchURI}>{matchURI}</a></Typography>
+                  <Typography>
+                    Via link: <a href={matchURI}>{matchURI}</a>
+                  </Typography>
                 </Grid>
                 <Grid item>
                   <Typography>Via QR-Code:</Typography>

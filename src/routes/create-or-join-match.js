@@ -3,11 +3,7 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
 import styled from 'styled-components'
-import {
-  Grid,
-  Typography,
-  Button
-} from 'material-ui'
+import { Grid, Typography, Button } from '@material-ui/core'
 
 const Page = styled.div`
   padding: 1rem;
@@ -37,10 +33,24 @@ export default class CreateOrJoinMatch extends Component {
             <Typography>Your player id is: {player.id}</Typography>
           </Grid>
           <Grid item>
-            <Button component={Link} to='/create-match' raised color={'primary'}>Create Match</Button>
+            <Button
+              component={Link}
+              to='/create-match'
+              variant='raised'
+              color='primary'
+            >
+              Create Match
+            </Button>
           </Grid>
           <Grid item>
-            <Button component={Link} to='/join-match' raised color={'secondary'}>Join Match</Button>
+            <Button
+              component={Link}
+              to='/join-match'
+              variant='raised'
+              color='secondary'
+            >
+              Join Match
+            </Button>
           </Grid>
         </OuterGrid>
       </Page>
